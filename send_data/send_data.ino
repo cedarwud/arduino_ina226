@@ -13,25 +13,30 @@ void setup() {
   Serial.begin(9600);
   Wire.begin();
 
-  // Initialize and configure INA226 Sensor 1
+  // Initialize INA226 Sensor 1
   if (!ina226_1.init()) {
     Serial.println("Failed to init INA226 #1. Check your wiring.");
     while (1) {}
   }
+  // Set shunt resistor value (in ohms) and max expected current (in amps)
+  ina226_1.setShuntResistor(0.1);  // Replace with your actual shunt resistor value
+  ina226_1.setMaxCurrent(3.0);     // Replace with expected maximum current
+
+  // Configure averaging, conversion time, and mode for continuous measurement
   ina226_1.setAverage(INA226_AVERAGES_16); // Adjust as needed
   ina226_1.setConversionTime(INA226_CT_1_1MS);
-  ina226_1.setMeasureMode(INA226_CONT_SHUNT_BUS);
-  ina226_1.setCalibration(0.005, 3.0); // Adjust based on shunt resistor and current
+  ina226_1.setMode(INA226_MODE_CONTINUOUS);
 
-  // Initialize and configure INA226 Sensor 2
+  // Initialize INA226 Sensor 2
   if (!ina226_2.init()) {
     Serial.println("Failed to init INA226 #2. Check your wiring.");
     while (1) {}
   }
-  ina226_2.setAverage(INA226_AVERAGES_16); // Adjust as needed
+  ina226_2.setShuntResistor(0.1);  // Replace with your actual shunt resistor value
+  ina226_2.setMaxCurrent(3.0);     // Replace with expected maximum current
+  ina226_2.setAverage(INA226_AVERAGES_16);
   ina226_2.setConversionTime(INA226_CT_1_1MS);
-  ina226_2.setMeasureMode(INA226_CONT_SHUNT_BUS);
-  ina226_2.setCalibration(0.005, 3.0); // Adjust based on shunt resistor and current
+  ina226_2.setMode(INA226_MODE_CONTINUOUS);
 
   Serial.println("INA226 Current Sensor - Data Ready");
 }
@@ -47,11 +52,11 @@ void loop() {
   float current_A2 = ina226_2.getCurrent_mA();
   float power_W2 = ina226_2.getBusPower();
 
-  // Ensure real-time data transmission by minimizing delay
+  // Send the data
   sendData(voltage_V1, current_A1, power_W1, voltage_V2, current_A2, power_W2);
 
-  // Remove or adjust delay as needed for real-time response
-  delay(100); // Reducing delay to increase update frequency
+  // Adjust or remove delay as needed for real-time response
+  delay(100); // Reducing delay for higher frequency data updates
 }
 
 // Function to send JSON data over the serial port
