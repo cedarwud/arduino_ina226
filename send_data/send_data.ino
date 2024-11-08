@@ -29,39 +29,37 @@ void setup() {
 }
 
 void loop() {
-  if (sensor.dataAvailable()) {
-    // Sensor 1 readings
-    float voltage_V1 = ina226_1.getBusVoltage_V();
-    float current_A1 = ina226_1.getCurrent_mA();
-    float power_W1 = ina226_1.getBusPower();
+  // Sensor 1 readings
+  float voltage_V1 = ina226_1.getBusVoltage_V();
+  float current_A1 = ina226_1.getCurrent_mA();
+  float power_W1 = ina226_1.getBusPower();
 
-    // Sensor 2 readings
-    float voltage_V2 = ina226_2.getBusVoltage_V();
-    float current_A2 = ina226_2.getCurrent_mA();
-    float power_W2 = ina226_2.getBusPower();
+  // Sensor 2 readings
+  float voltage_V2 = ina226_2.getBusVoltage_V();
+  float current_A2 = ina226_2.getCurrent_mA();
+  float power_W2 = ina226_2.getBusPower();
 
-    // Create a JSON-formatted string with the sensor data for both INA226 sensors
-    String jsonData = "{\"sensor_1\": {\"voltage\":";
-    jsonData += voltage_V1;
-    jsonData += ", \"current\":";
-    jsonData += current_A1;
-    jsonData += ", \"power\":";
-    jsonData += power_W1;
-    jsonData += ", \"channel\":";
-    jsonData += 0;
-    jsonData += "}, \"sensor_2\": {\"voltage\":";
-    jsonData += voltage_V2;
-    jsonData += ", \"current\":";
-    jsonData += current_A2;
-    jsonData += ", \"power\":";
-    jsonData += power_W2;
-    jsonData += ", \"channel\":";
-    jsonData += 1;
-    jsonData += "}}";
+  // Create a JSON-formatted string with the sensor data for both INA226 sensors
+  String jsonData = "{\"sensor_1\": {\"voltage\":";
+  jsonData += voltage_V1;
+  jsonData += ", \"current\":";
+  jsonData += current_A1;
+  jsonData += ", \"power\":";
+  jsonData += power_W1;
+  jsonData += ", \"channel\":";
+  jsonData += 0;
+  jsonData += "}, \"sensor_2\": {\"voltage\":";
+  jsonData += voltage_V2;
+  jsonData += ", \"current\":";
+  jsonData += current_A2;
+  jsonData += ", \"power\":";
+  jsonData += power_W2;
+  jsonData += ", \"channel\":";
+  jsonData += 1;
+  jsonData += "}}";
 
-    // Send the JSON data for both sensors over the serial port
-    Serial.println(jsonData);
-  }
+  // Send the JSON data for both sensors over the serial port
+  Serial.println(jsonData);
 
   delay(1000); // Send data every second
 }
